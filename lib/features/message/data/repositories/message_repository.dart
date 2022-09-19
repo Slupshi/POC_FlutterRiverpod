@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:poc_flutter_riverpod/features/message/data/repositories_impl/message_repository.dart';
+import 'package:poc_flutter_riverpod/features/message/data/irepositories/message_repository.dart';
 import 'package:poc_flutter_riverpod/features/message/domain/models/message.dart';
 import 'package:poc_flutter_riverpod/shared/api/iapi_repository.dart';
 

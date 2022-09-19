@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 import '../viewModels/message_viewmodel.dart';
 import '../styles.dart';
+
+// final sharedPrefsProvider = FutureProvider<SharedPreferences>(
+//     (ref) async => await SharedPreferences.getInstance());
 
 // HomePage (utilisant le MessageViewModel)
 class MessageView extends ConsumerWidget {
@@ -13,6 +17,11 @@ class MessageView extends ConsumerWidget {
     // Définition du MessageViewModel
     final MessageState messageState = ref.watch(messageViewModelProvider);
 
+    // final SharedPreferences? sharedPreferences =
+    //     ref.watch(sharedPrefsProvider).maybeWhen(
+    //           data: (data) => data,
+    //           orElse: () => null,
+    //         );
     // Ecouté des changements d'état du MessageViewModel
     // ref.listen(
     //   messageNotifier,
@@ -46,32 +55,30 @@ class MessageView extends ConsumerWidget {
         ],
       ),
       body: Center(
-        child: Consumer(builder: (context, ref, child) {
-          return messageState.messages.isEmpty
-              ? const Text("Aucun Messages",
-                  style: TextStyle(fontSize: 24, fontStyle: FontStyle.italic))
-              : ListView.builder(
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      leading: Text("$index"),
-                      title: Text(messageState.messages[index].message),
-                      subtitle: Text(
-                          messageState.messages[index].publishDate.toString()),
-                      trailing: ElevatedButton(
-                          onPressed: () {
-                            ref
-                                .read(messageViewModelProvider.notifier)
-                                .removeItem(messageState.messages[index]);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: darkGreen,
-                          ),
-                          child: const Text("Supprimer")),
-                    );
-                  },
-                  itemCount: messageState.messages.length,
-                );
-        }),
+        child: messageState.messages.isEmpty
+            ? const Text("Aucun Messages",
+                style: TextStyle(fontSize: 24, fontStyle: FontStyle.italic))
+            : ListView.builder(
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    leading: Text("$index"),
+                    title: Text(messageState.messages[index].message),
+                    subtitle: Text(
+                        messageState.messages[index].publishDate.toString()),
+                    trailing: ElevatedButton(
+                        onPressed: () {
+                          ref
+                              .read(messageViewModelProvider.notifier)
+                              .removeItem(messageState.messages[index]);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: darkGreen,
+                        ),
+                        child: const Text("Supprimer")),
+                  );
+                },
+                itemCount: messageState.messages.length,
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (() {

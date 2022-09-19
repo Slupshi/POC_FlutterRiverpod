@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poc_flutter_riverpod/features/message/data/repositories/message_repository.dart';
-import 'package:poc_flutter_riverpod/features/message/data/repositories_impl/message_repository.dart';
+import 'package:poc_flutter_riverpod/features/message/data/irepositories/message_repository.dart';
 
 import '../../domain/models/message.dart';
 
@@ -46,16 +46,15 @@ class MessageStateNotifier extends StateNotifier<MessageState> {
 
   Future<void> addItem(String item) async {
     item += " #${state.messages.length}";
-    final message = Message(message: item, publishDate: DateTime.now());
-    messageRepository.createMessage(message);
-
-    getMessages();
+    final Message message = Message(message: item, publishDate: DateTime.now());
+    await messageRepository.createMessage(message);
+    state = state.copyWith(messages: [...state.messages, message]);
   }
 
   Future<void> removeItem(Message item) async {
-    if (item.id != null) {
-      messageRepository.deleteMessage(item.id!);
-    }
-    getMessages();
+    await messageRepository.deleteMessage(item.id!);
+    List<Message> newList = state.messages;
+    newList.removeWhere((element) => element.id == item.id);
+    state = state.copyWith(messages: newList);
   }
 }

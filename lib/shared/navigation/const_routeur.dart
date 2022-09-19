@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:poc_flutter_riverpod/features/message/presentation/views/home_view.dart';
+import 'package:poc_flutter_riverpod/home_view.dart';
 import 'package:poc_flutter_riverpod/features/message/presentation/views/message_view.dart';
 
 import 'root_layout.dart';
